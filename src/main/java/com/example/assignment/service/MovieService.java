@@ -25,7 +25,6 @@ public class MovieService {
     }
 
     public void uploadFile() throws FileNotFoundException {
-        List<List<String>> records = new ArrayList<>();
         List<Movie> movieList = new ArrayList<>();
         try (BufferedReader br = new BufferedReader(new FileReader("src/main/resources/netflix_titles.csv"))) {
             String line;

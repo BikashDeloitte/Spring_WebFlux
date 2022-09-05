@@ -10,7 +10,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @RestController
-public class controller {
+public class Controller {
 
     @Autowired
     MovieService movieService;
@@ -28,7 +28,6 @@ public class controller {
     @GetMapping("/movie/all")
     public ResponseEntity<Flux<Movie>> getAllMovies() {
         Flux<Movie> movieList = movieService.getAllMovies();
-        System.out.println(movieList);
         return ResponseEntity.ok(movieList);
     }
 
