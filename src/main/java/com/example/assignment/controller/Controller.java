@@ -31,7 +31,7 @@ public class Controller {
         return ResponseEntity.ok(movieList);
     }
 
-    @GetMapping("/movie/{count}")
+    @GetMapping("/movie/{count}/")
     public ResponseEntity<Flux<Movie>> getMovieByTypeAndCountry(@RequestParam String movieType, @RequestParam String country, @PathVariable int count) {
         Flux<Movie> movies = movieService.getMovieByTypeAndCountry(movieType, country, count);
         return ResponseEntity.ok(movies);
@@ -46,6 +46,12 @@ public class Controller {
     @PutMapping("/movie/update/showId")
     public ResponseEntity<Mono<Movie>> updateMovieByShowId(@RequestParam String releaseDate, @RequestParam String showId) {
         Mono<Movie> movie = movieService.updateMovieByShowId(releaseDate, showId);
+        return ResponseEntity.ok(movie);
+    }
+
+    @GetMapping("/movie/{id}")
+    public ResponseEntity<Mono<Movie>> getMovieById(@PathVariable Long id){
+        Mono<Movie> movie = movieService.getMovieById(id);
         return ResponseEntity.ok(movie);
     }
 

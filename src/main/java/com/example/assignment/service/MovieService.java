@@ -66,4 +66,8 @@ public class MovieService {
         movieMono.flatMap(movieRepository::save);
         return movieMono;
     }
+
+    public Mono<Movie> getMovieById(Long id) {
+        return movieRepository.findById(id);
+    }
 }
