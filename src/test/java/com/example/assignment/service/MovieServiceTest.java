@@ -35,7 +35,7 @@ class MovieServiceTest {
                 "Samuthirakani, Bharath Seeni, Vinoth, Esakki Barath, Chemban Vinod Jose, Gautham Menon, Krisha Kurup, Subiksha",
                 "India",
                 "September 15, 2018",
-                "2018",
+                2018,
                 "TV-14",
                 "128 min",
                 "Action & Adventure, Dramas, International Movies",
@@ -49,7 +49,7 @@ class MovieServiceTest {
                 "Samuthirakani, Bharath Seeni, Vinoth, Esakki Barath, Chemban Vinod Jose, Gautham Menon, Krisha Kurup, Subiksha",
                 "USA",
                 "September 15, 2018",
-                "2018",
+                2018,
                 "TV-14",
                 "128 min",
                 "Action & Adventure, Dramas, International Movies",
@@ -78,7 +78,7 @@ class MovieServiceTest {
                 "Samuthirakani, Bharath Seeni, Vinoth, Esakki Barath, Chemban Vinod Jose, Gautham Menon, Krisha Kurup, Subiksha",
                 "India",
                 "September 15, 2018",
-                "2018",
+                2018,
                 "TV-14",
                 "128 min",
                 "Action & Adventure, Dramas, International Movies",
@@ -88,9 +88,9 @@ class MovieServiceTest {
         when(movieRepositoryMock.findByTitle("Goli Soda 2")).thenReturn(Mono.just(movie1));
         when(movieRepositoryMock.save(movie1)).thenReturn(Mono.just(movie1));
 
-        StepVerifier.create(movieServiceMock.updateMovieByTitle("2010","Goli Soda 2"))
+        StepVerifier.create(movieServiceMock.updateMovieByTitle(2010,"Goli Soda 2"))
                 .assertNext(movie -> {
-                    assertEquals("2010",movie.getReleaseYear());
+                    assertEquals(2010,movie.getReleaseYear());
                 })
                 .verifyComplete();
     }
@@ -105,7 +105,7 @@ class MovieServiceTest {
                 "Samuthirakani, Bharath Seeni, Vinoth, Esakki Barath, Chemban Vinod Jose, Gautham Menon, Krisha Kurup, Subiksha",
                 "India",
                 "September 15, 2018",
-                "2018",
+                2018,
                 "TV-14",
                 "128 min",
                 "Action & Adventure, Dramas, International Movies",
@@ -115,9 +115,9 @@ class MovieServiceTest {
         when(movieRepositoryMock.findByShowId(Mockito.anyString())).thenReturn(Mono.just(movie1));
         when(movieRepositoryMock.save(movie1)).thenReturn(Mono.just(movie1));
 
-        StepVerifier.create(movieServiceMock.updateMovieByShowId("2010","s22"))
+        StepVerifier.create(movieServiceMock.updateMovieByShowId(2010,"s22"))
                 .assertNext(movie -> {
-                    assertEquals("2010",movie.getReleaseYear());
+                    assertEquals(2010,movie.getReleaseYear());
                 })
                 .verifyComplete();
     }

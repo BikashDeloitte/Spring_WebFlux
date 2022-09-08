@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import javax.validation.Valid;
+
 @RestController
 public class Controller {
 
@@ -37,14 +39,16 @@ public class Controller {
         return ResponseEntity.ok(movies);
     }
 
+//    @Valid
     @PutMapping("/movie/update/title")
-    public ResponseEntity<Mono<Movie>> updateMovieByTitle(@RequestParam String releaseDate, @RequestParam String title) {
+    public ResponseEntity<Mono<Movie>> updateMovieByTitle(@Valid @RequestParam int releaseDate, @RequestParam String title) {
         Mono<Movie> movie = movieService.updateMovieByTitle(releaseDate, title);
         return ResponseEntity.ok(movie);
     }
 
+//    @Valid
     @PutMapping("/movie/update/showId")
-    public ResponseEntity<Mono<Movie>> updateMovieByShowId(@RequestParam String releaseDate, @RequestParam String showId) {
+    public ResponseEntity<Mono<Movie>> updateMovieByShowId(@Valid @RequestParam int releaseDate, @RequestParam String showId) {
         Mono<Movie> movie = movieService.updateMovieByShowId(releaseDate, showId);
         return ResponseEntity.ok(movie);
     }

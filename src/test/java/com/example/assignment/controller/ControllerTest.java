@@ -39,7 +39,7 @@ class ControllerTest {
                 "Samuthirakani, Bharath Seeni, Vinoth, Esakki Barath, Chemban Vinod Jose, Gautham Menon, Krisha Kurup, Subiksha",
                 "India",
                 "September 15, 2018",
-                "2018",
+                2018,
                 "TV-14",
                 "128 min",
                 "Action & Adventure, Dramas, International Movies",
@@ -65,14 +65,14 @@ class ControllerTest {
                 "Samuthirakani, Bharath Seeni, Vinoth, Esakki Barath, Chemban Vinod Jose, Gautham Menon, Krisha Kurup, Subiksha",
                 "India",
                 "September 15, 2018",
-                "2018",
+                2018,
                 "TV-14",
                 "128 min",
                 "Action & Adventure, Dramas, International Movies",
                 "A taxi driver, a gangster and an athlete struggle to better their lives despite obstacles like crooked politicians, evil dons and caste barriers."
         );
 
-        when(movieService.updateMovieByShowId(Mockito.anyString(),Mockito.anyString())).thenReturn(Mono.just(movie));
+        when(movieService.updateMovieByShowId(Mockito.any(),Mockito.anyString())).thenReturn(Mono.just(movie));
 
         webTestClient.put()
                 .uri(uriBuilder -> uriBuilder.path("/movie/update/showId").queryParam("releaseDate","2090").queryParam("showId","s21").build())

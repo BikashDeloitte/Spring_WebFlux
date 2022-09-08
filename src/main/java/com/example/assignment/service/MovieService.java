@@ -30,7 +30,7 @@ public class MovieService {
             String line;
             while ((line = br.readLine()) != null) {
                 String[] values = line.split(",(?=([^\"]*\"[^\"]*\")*[^\"]*$)");
-                if(values.length != 12){
+                if(values.length != 12 || values[0].equals("show_id")){
                     continue;
                 }
                 Movie movie = new Movie(values);
@@ -39,7 +39,6 @@ public class MovieService {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        movieList.remove(0);
 
         Flux.fromIterable(movieList)
                 .flatMap(movieRepository::save)
@@ -53,14 +52,14 @@ public class MovieService {
                 .take(count);
     }
 
-    public Mono<Movie> updateMovieByTitle(String releaseDate, String title) {
+    public Mono<Movie> updateMovieByTitle(int releaseDate, String title) {
         Mono<Movie> movieMono = movieRepository.findByTitle(title)
                 .doOnNext(movie -> movie.setReleaseYear(releaseDate));
         movieMono.flatMap(movieRepository::save);
         return movieMono;
     }
 
-    public Mono<Movie> updateMovieByShowId(String releaseDate, String showId) {
+    public Mono<Movie> updateMovieByShowId(int releaseDate, String showId) {
         Mono<Movie> movieMono = movieRepository.findByShowId(showId)
                 .doOnNext(movie -> movie.setReleaseYear(releaseDate));
         movieMono.flatMap(movieRepository::save);
