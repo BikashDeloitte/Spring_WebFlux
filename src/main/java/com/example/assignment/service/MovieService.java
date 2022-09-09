@@ -10,7 +10,6 @@ import reactor.core.publisher.Mono;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,7 +35,7 @@ public class MovieService {
                 Movie movie = new Movie(values);
                 movieList.add(movie);
             }
-        } catch (IOException e) {
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
 
@@ -52,14 +51,14 @@ public class MovieService {
                 .take(count);
     }
 
-    public Mono<Movie> updateMovieByTitle(int releaseDate, String title) {
+    public Mono<Movie> updateMovieByTitle(Integer releaseDate, String title) {
         Mono<Movie> movieMono = movieRepository.findByTitle(title)
                 .doOnNext(movie -> movie.setReleaseYear(releaseDate));
         movieMono.flatMap(movieRepository::save);
         return movieMono;
     }
 
-    public Mono<Movie> updateMovieByShowId(int releaseDate, String showId) {
+    public Mono<Movie> updateMovieByShowId(Integer releaseDate, String showId) {
         Mono<Movie> movieMono = movieRepository.findByShowId(showId)
                 .doOnNext(movie -> movie.setReleaseYear(releaseDate));
         movieMono.flatMap(movieRepository::save);
@@ -68,5 +67,9 @@ public class MovieService {
 
     public Mono<Movie> getMovieById(Long id) {
         return movieRepository.findById(id);
+    }
+
+    public Mono<Movie> addMovie(Movie movie) {
+        return movieRepository.save(movie);
     }
 }

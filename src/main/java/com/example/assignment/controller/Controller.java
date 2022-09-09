@@ -28,35 +28,45 @@ public class Controller {
     }
 
     @GetMapping("/movie/all")
-    public ResponseEntity<Flux<Movie>> getAllMovies() {
-        Flux<Movie> movieList = movieService.getAllMovies();
-        return ResponseEntity.ok(movieList);
+    public Flux<ResponseEntity<Movie>> getAllMovies() {
+        return movieService.getAllMovies()
+                .map(ResponseEntity::ok)
+                .defaultIfEmpty(ResponseEntity.notFound().build());
     }
 
     @GetMapping("/movie/{count}/")
-    public ResponseEntity<Flux<Movie>> getMovieByTypeAndCountry(@RequestParam String movieType, @RequestParam String country, @PathVariable int count) {
-        Flux<Movie> movies = movieService.getMovieByTypeAndCountry(movieType, country, count);
-        return ResponseEntity.ok(movies);
+    public Flux<ResponseEntity<Movie>> getMovieByTypeAndCountry(@RequestParam String movieType, @RequestParam String country, @PathVariable int count) {
+        return movieService.getMovieByTypeAndCountry(movieType, country, count)
+                .map(ResponseEntity::ok)
+                .defaultIfEmpty(ResponseEntity.notFound().build());
     }
 
-//    @Valid
     @PutMapping("/movie/update/title")
-    public ResponseEntity<Mono<Movie>> updateMovieByTitle(@Valid @RequestParam int releaseDate, @RequestParam String title) {
-        Mono<Movie> movie = movieService.updateMovieByTitle(releaseDate, title);
-        return ResponseEntity.ok(movie);
+    public Mono<ResponseEntity<Movie>> updateMovieByTitle(@Valid @RequestParam Integer releaseDate, @RequestParam String title) {
+        return movieService.updateMovieByTitle(releaseDate, title)
+                .map(ResponseEntity::ok)
+                .defaultIfEmpty(ResponseEntity.notFound().build());
     }
 
-//    @Valid
     @PutMapping("/movie/update/showId")
-    public ResponseEntity<Mono<Movie>> updateMovieByShowId(@Valid @RequestParam int releaseDate, @RequestParam String showId) {
-        Mono<Movie> movie = movieService.updateMovieByShowId(releaseDate, showId);
-        return ResponseEntity.ok(movie);
+    public Mono<ResponseEntity<Movie>> updateMovieByShowId(@Valid @RequestParam Integer releaseDate, @RequestParam String showId) {
+        return movieService.updateMovieByShowId(releaseDate, showId)
+                .map(ResponseEntity::ok)
+                .defaultIfEmpty(ResponseEntity.notFound().build());
     }
 
     @GetMapping("/movie/{id}")
-    public ResponseEntity<Mono<Movie>> getMovieById(@PathVariable Long id){
-        Mono<Movie> movie = movieService.getMovieById(id);
-        return ResponseEntity.ok(movie);
+    public Mono<ResponseEntity<Movie>> getMovieById(@PathVariable Long id){
+        return movieService.getMovieById(id)
+                .map(ResponseEntity::ok)
+                .defaultIfEmpty(ResponseEntity.notFound().build());
+    }
+
+    @PostMapping("/movie")
+    public Mono<ResponseEntity<Movie>> addMovie(@Valid @RequestBody Movie movie){
+        return movieService.addMovie(movie)
+                .map(ResponseEntity::ok)
+                .defaultIfEmpty(ResponseEntity.badRequest().build());
     }
 
 }

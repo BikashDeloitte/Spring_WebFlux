@@ -15,6 +15,8 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.Arrays;
+
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.when;
 
@@ -30,19 +32,19 @@ class ControllerTest {
     MovieService movieService;
 
     @Test
-    public void getMovieByTypeAndCountryTest() {
+    void getMovieByTypeAndCountryTest() {
         Movie movie = new Movie(
                 "s22",
                 "Movie",
                 "Goli Soda 2",
                 "Vijay Milton",
-                "Samuthirakani, Bharath Seeni, Vinoth, Esakki Barath, Chemban Vinod Jose, Gautham Menon, Krisha Kurup, Subiksha",
+                Arrays.asList("Samuthirakani", " Bharath Seeni", " Vinoth", " Esakki Barath", " Chemban Vinod Jose", " Gautham Menon", " Krisha Kurup", " Subiksha"),
                 "India",
                 "September 15, 2018",
                 2018,
                 "TV-14",
                 "128 min",
-                "Action & Adventure, Dramas, International Movies",
+                Arrays.asList("Action & Adventure", " Dramas", " International Movies"),
                 "A taxi driver, a gangster and an athlete struggle to better their lives despite obstacles like crooked politicians, evil dons and caste barriers."
         );
 
@@ -56,19 +58,19 @@ class ControllerTest {
     }
 
     @Test
-    public void updateMovieByShowIdTest(){
+    void updateMovieByShowIdTest(){
         Movie movie = new Movie(
                 "s22",
                 "Movie",
                 "Goli Soda 2",
                 "Vijay Milton",
-                "Samuthirakani, Bharath Seeni, Vinoth, Esakki Barath, Chemban Vinod Jose, Gautham Menon, Krisha Kurup, Subiksha",
+                Arrays.asList("Samuthirakani", " Bharath Seeni", " Vinoth", " Esakki Barath", " Chemban Vinod Jose", " Gautham Menon", " Krisha Kurup", " Subiksha"),
                 "India",
                 "September 15, 2018",
                 2018,
                 "TV-14",
                 "128 min",
-                "Action & Adventure, Dramas, International Movies",
+                Arrays.asList("Action & Adventure", " Dramas", " International Movies"),
                 "A taxi driver, a gangster and an athlete struggle to better their lives despite obstacles like crooked politicians, evil dons and caste barriers."
         );
 

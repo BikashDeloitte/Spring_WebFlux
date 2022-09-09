@@ -2,7 +2,6 @@ package com.example.assignment.controller;
 
 import com.example.assignment.entity.Movie;
 import com.example.assignment.repository.MovieRepository;
-import lombok.var;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -13,7 +12,8 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import reactor.core.publisher.Flux;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import java.util.Arrays;
+
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
@@ -27,20 +27,21 @@ class ControllerIntegrationTest {
     @Mock
     MovieRepository movieRepository;
 
+    /*some problem with test*/
     @Test
-    public void getMovieByTypeAndCountryTest() {
+    void getMovieByTypeAndCountryTest() {
         Movie movie1 = new Movie(
                 "s22",
                 "Movie",
                 "Goli Soda 2",
                 "Vijay Milton",
-                "Samuthirakani, Bharath Seeni, Vinoth, Esakki Barath, Chemban Vinod Jose, Gautham Menon, Krisha Kurup, Subiksha",
+                Arrays.asList("Samuthirakani", " Bharath Seeni", " Vinoth", " Esakki Barath", " Chemban Vinod Jose", " Gautham Menon", " Krisha Kurup", " Subiksha"),
                 "India",
                 "September 15, 2018",
                 2018,
                 "TV-14",
                 "128 min",
-                "Action & Adventure, Dramas, International Movies",
+                Arrays.asList("Action & Adventure", " Dramas", " International Movies"),
                 "A taxi driver, a gangster and an athlete struggle to better their lives despite obstacles like crooked politicians, evil dons and caste barriers."
         );
         Movie movie2 = new Movie(
@@ -48,13 +49,13 @@ class ControllerIntegrationTest {
                 "Movie",
                 "Soda 2",
                 "Milton",
-                "Samuthirakani, Bharath Seeni, Vinoth, Esakki Barath, Chemban Vinod Jose, Gautham Menon, Krisha Kurup, Subiksha",
+                Arrays.asList("Samuthirakani", " Bharath Seeni", " Vinoth", " Esakki Barath", " Chemban Vinod Jose", " Gautham Menon", " Krisha Kurup", " Subiksha"),
                 "USA",
                 "September 15, 2018",
                 2018,
                 "TV-14",
                 "128 min",
-                "Action & Adventure, Dramas, International Movies",
+                Arrays.asList("Action & Adventure", " Dramas", " International Movies"),
                 "A taxi driver, a gangster and an athlete struggle to better their lives despite obstacles like crooked politicians, evil dons and caste barriers."
         );
 
@@ -62,7 +63,7 @@ class ControllerIntegrationTest {
 
         webTestClient.get()
                 .uri(uriBuilder -> uriBuilder
-                        .path("/movie/{count}")
+                        .path("/movie/{count}/")
                         .queryParam("movieType", "Movie")
                         .queryParam("country", "India")
                         .build(1))
