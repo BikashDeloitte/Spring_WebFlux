@@ -27,7 +27,6 @@ class ControllerIntegrationTest {
     @Mock
     MovieRepository movieRepository;
 
-    /*some problem with test*/
     @Test
     void getMovieByTypeAndCountryTest() {
         Movie movie1 = new Movie(

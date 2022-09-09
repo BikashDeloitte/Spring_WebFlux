@@ -34,11 +34,14 @@ public class Controller {
                 .defaultIfEmpty(ResponseEntity.notFound().build());
     }
 
+    /*
+    * /movie/{count}/ -> / is add to resolve a problem
+    * we are using ResponseEntity<Flux<Movie>> return Type instead Flux<ResponseEntity<Movie>>, Flux<ResponseEntity<Movie>> giving only one element
+    * */
     @GetMapping("/movie/{count}/")
-    public Flux<ResponseEntity<Movie>> getMovieByTypeAndCountry(@RequestParam String movieType, @RequestParam String country, @PathVariable int count) {
-        return movieService.getMovieByTypeAndCountry(movieType, country, count)
-                .map(ResponseEntity::ok)
-                .defaultIfEmpty(ResponseEntity.notFound().build());
+    public ResponseEntity<Flux<Movie>> getMovieByTypeAndCountry(@RequestParam("movieType") String movieType, @RequestParam("country") String country, @PathVariable int count) {
+        Flux<Movie> movieFlux = movieService.getMovieByTypeAndCountry(movieType, country, count);
+        return ResponseEntity.ok(movieFlux);
     }
 
     @PutMapping("/movie/update/title")
