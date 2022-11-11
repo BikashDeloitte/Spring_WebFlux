@@ -1,16 +1,22 @@
 package com.example.assignment.service;
 
 import com.example.assignment.entity.Movie;
+import com.example.assignment.exception.NotFoundException;
 import com.example.assignment.repository.MovieRepository;
+import com.opencsv.CSVReader;
+import com.opencsv.CSVReaderBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -25,18 +31,42 @@ public class MovieService {
 
     public void uploadFile() throws FileNotFoundException {
         List<Movie> movieList = new ArrayList<>();
-        try (BufferedReader br = new BufferedReader(new FileReader("src/main/resources/netflix_titles.csv"))) {
-            String line;
-            while ((line = br.readLine()) != null) {
-                String[] values = line.split(",(?=([^\"]*\"[^\"]*\")*[^\"]*$)");
-                if(values.length != 12 || values[0].equals("show_id")){
-                    continue;
-                }
-                Movie movie = new Movie(values);
-                movieList.add(movie);
+
+        //with regex
+//        try (BufferedReader br = new BufferedReader(new FileReader("src/main/resources/netflix_titles.csv"))) {
+//            String line;
+//            while ((line = br.readLine()) != null) {
+//                String[] values = line.split(",(?=([^\"]*\"[^\"]*\")*[^\"]*$)");
+//                if(values.length != 12 || values[0].equals("show_id")){
+//                    continue;
+//                }
+//                Movie movie = new Movie(values);
+//                movieList.add(movie);
+//            }
+//        } catch (Exception e) {
+//            throw new RuntimeException(e);
+//        }
+
+        //with csvReader
+        List<String[]> list = new ArrayList<>();
+        Path filePath = Paths.get("src/main/resources/netflix_titles.csv");
+        try (Reader reader = Files.newBufferedReader(filePath)) {
+            try (CSVReader csvReader = new CSVReaderBuilder(reader).withSkipLines(6).build()) {
+                String[] values;
+                while ((values = csvReader.readNext()) != null) {
+
+                    if(values.length != 12 || values[0].equals("show_id")){
+                        continue;
+                    }
+                        Movie movie = new Movie(values);
+                        movieList.add(movie);
+                    }
+
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
 
         Flux.fromIterable(movieList)
@@ -45,10 +75,14 @@ public class MovieService {
     }
 
     public Flux<Movie> getMovieByTypeAndCountry(String movieType, String country, int count) {
+        if(count == 0){
+            return Flux.empty();
+        }
         return movieRepository.findAll()
                 .filter(movies ->
                         movies.getCountry().equalsIgnoreCase(country) && movies.getType().equalsIgnoreCase(movieType))
                 .take(count);
+//                .defaultIfEmpty(Flux.error(new NotFoundException("Movie not found")));
     }
 
     public Mono<Movie> updateMovieByTitle(Integer releaseDate, String title) {
